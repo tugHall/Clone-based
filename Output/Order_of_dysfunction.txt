@@ -1,0 +1,5 @@
+Order of gene dysfunction: from first to last	Number of clones with same order	Number of cells with same order
+PIK3CA -> APC -> TP53 -> KRAS	8338	29723
+PIK3CA -> APC -> KRAS -> TP53	905	3210
+PIK3CA -> APC	27	39
+PIK3CA -> APC -> TP53	20	43
