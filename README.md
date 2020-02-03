@@ -31,7 +31,7 @@ The wide availability of recent cancer genomic data requires a coherent model th
 General changes
 ---
 
-This version is based on the clone consideration instead cell based version 1. 
+This version is based on the clone consideration instead cell-based version 1.1.  
 Each clone has one or more cells, that allows to accelerate the calculations when number of clones is much less than number of cells.
 Definition of clone: the clone is set of cell with same set of genes, which have same mutated / not mutated sites in genes.
 
@@ -39,8 +39,9 @@ Definition of clone: the clone is set of cell with same set of genes, which have
 Content of package
 ---
 
-* **User-Guide-tugHall_2.Rmd** and **User-Guide-tugHall_2.html** are the user guides to install, run, and use tugHall simulator in R Markdown and html formats. 
-* **User-Guide-Analysis_2.Rmd** and **User-Guide-Analysis_2.html** are the user guide to analyze the results of a single simulation in R Markdown and html formats.
-* **/tugHall_2_clones/** is a directory with the program code, input, and output data.
-* **/FOR_DEVELOPMENT/** is a directory for development.
+* **tugHall_2_clone.R** is a R-script of simulation, which uses scripts in **/Code/** folder.
+* **Code** is the directory with scripts to simulate and to analyze data. 
+* **/Input/** and **Output** are the directories for input and output data during a simulation. 
+* **Documentation** is a directory with documentation to use tugHall software and to analyze data of simulation.   
+* **Figures** is the folder with figures of plots of last simulation, which are used in user-guides also. 
 
