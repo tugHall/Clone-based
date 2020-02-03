@@ -40,8 +40,8 @@ Content of package
 ---
 
 * **tugHall_2_clone.R** is a R-script of simulation, which uses scripts in **/Code/** folder.
-* **Code** is the directory with scripts to simulate and to analyze data. 
-* **/Input/** and **Output** are the directories for input and output data during a simulation. 
+* **/Code/** is the directory with scripts to simulate and to analyze data. 
+* **/Input/** and **/Output/** are the directories for input and output data during a simulation. 
 * **Documentation** is a directory with documentation to use tugHall software and to analyze data of simulation.   
 * **Figures** is the folder with figures of plots of last simulation, which are used in user-guides also. 
 
