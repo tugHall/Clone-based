@@ -1,0 +1,18 @@
+APC	8532	apoptosis	s	0.27550166
+APC	8532	growth	s	0.35688326
+APC	8532	invasion	s	0.48455387
+KRAS	567	apoptosis	o	0.31217750
+KRAS	567	growth	o	0.16939553
+KRAS	567	immortalization	o	0.51338180
+KRAS	567	angiogenesis	o	0.28426762
+KRAS	567	invasion	o	0.09416264
+TP53	1182	apoptosis	s	0.25448676
+TP53	1182	growth	s	0.28426762
+TP53	1182	angiogenesis	s	0.33555465
+TP53	1182	immortalization	s	0.48661820
+TP53	1182	invasion	s	0.03882945
+PIK3CA	3207	invasion	o	0.05690690
+PIK3CA	3207	growth	o	0.33555465
+PIK3CA	3207	angiogenesis	o	0.34768163
+PIK3CA	3207	apoptosis	o	0.21830169
+
