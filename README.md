@@ -45,5 +45,6 @@ Content of package
 * **/Input/** and **/Output/** are the directories for input and output data during a simulation. 
 * **/Documentation/** is a directory with documentation to use tugHall software and to analyze data of simulation.   
 * **/Figures/** is the folder with figures of plots of last simulation, which are used in user-guides also. 
-* **/TESTs/** is the directory with tests and it's results. Description of tests in the folder. 
+* **/TESTs/** is the directory with tests and it's results. Description of tests is in the folder. 
+
 
