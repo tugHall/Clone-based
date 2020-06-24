@@ -1,3 +1,0 @@
-Time	AvgOrIndx	ID	ParentID:Birthday	c'	d'	i'	im'	a'	k'	E'	N	Nmax'	M	Ha	Him	Hi	Hd	Hb	type	mut_den	PosDriver:APC	PosDriver:KRAS	PosDriver:TP53	PosDriver:PIK3CA	PosPasngr:APC	PosPasngr:KRAS	PosPasngr:TP53	PosPasngr:PIK3CA	Clone number	Passengers Clone number	Mix Clone number
-2	avg	-	-	1	0.999999990909091	0	1	0.5	0	9.09090909090909e-12	1044	1.1e+11	0	1	1	1	1	1	0	1	1	1	1	1					-	-	-
-3	avg	-	-	2	0.999999990509091	0	1	0.5	0	9.09090909090909e-12	1042	1.1e+11	0	1	1	1	1	1	0	1	1	1	1	1					-	-	-
