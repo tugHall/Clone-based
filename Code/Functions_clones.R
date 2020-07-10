@@ -319,7 +319,7 @@ Pl_number_cells_in_clones <- function(clones = clones) {
     
     jColor <- jCol( nm = length(evolution_clones) )
     
-    print("This is a plot for  number of cells in each cluster: ") 
+    print("This is a plot for  number of cells in each clone: ") 
     
     for (ll in 1:2) {
         if (ll == 1) {
@@ -369,138 +369,127 @@ ineq_time <- function(time_max,clones) {
 }    
 
 
-tab_clones <- function(d , freq){
+
+tab_sites <- function(d , freq){
+  
+  # vector of sites in Metastatic cells
+  site  <-  str_split( d, "," ) 
+  site  <-  as.integer( unlist( site )  )
+  site  <-  unique( site )
+  
+  freq <- as.numeric(as.character(freq))
+  
+  tb  <-  data.frame( pos = site, Freq = 0 )
+  
+  for (s in 1:length( site )) {
     
-    freq <- as.numeric(as.character(freq))
-    tb <- table(d)
-    for (h in 1:length(tb)) {
-        pos <- as.integer(names(tb)[h])
-        tb[h] <- sum(freq[which(d == pos)])
-    }
-    
-    return(tb)
+    w  <-  grep(site[s], d)     #### which site in gene for all clones
+    tb[ s, 'Freq' ]  <-  sum(freq[w])  ### number of cells with same site at gene
+  }
+  
+  tb[is.na(tb)] <- 0
+  
+  return(tb)
 }
+
 
 
 
 Safe_VAF <- function(data_last, n_cluster) {
+  
+  VAF <- NULL
+  N <- data_last$N[1]
+  M <- data_last$M[1]
+  N_all <- N + M
+  
+  st <- min(n_cluster)
+  # print(paste0("Start column of genes is  ",st))
+  for (k in st:(st-1 + 2 * onco$len)) {
     
-    VAF <- NULL
-    N <- data_last$N[1]
-    M <- data_last$M[1]
-    N_all <- N + M
+    if (k > st-1+onco$len) DriverPasngr <- "P" else DriverPasngr <- "D" 
+    if (k > st-1+onco$len) Gene <- onco$name[ k - st+1 - onco$len] else Gene <- onco$name[ k - st+1]
     
-    st <- min(n_cluster)
-    print(paste0("Start column of genes is  ",st))
-    for (k in st:(st-1 + 2 * onco$len)) {
-        
-        if (k > st-1+onco$len) DriverPasngr <- "P" else DriverPasngr <- "D" 
-        if (k > st-1+onco$len) Gene <- onco$name[ k - st+1 - onco$len] else Gene <- onco$name[ k - st+1]
-        
-        d <- as.vector( data_last[,k] )
-        d <- as.character(d)
-        d <- str_replace_all(d,":.....,",",")
-        d <- str_replace_all(d,":....,",",")
-        d <- str_replace_all(d,":...,",",")
-        d <- str_replace_all(d,":..,",",")
-        d <- str_replace_all(d,":.,",",")
-        
-        d <- str_replace_all(d,":.....","")
-        d <- str_replace_all(d,":....","")
-        d <- str_replace_all(d,":...","")
-        d <- str_replace_all(d,":..","")
-        d <- str_replace_all(d,":.","")
-        
-        # condition for Primary and metastasis cells:
-        cond_prim <- which(data_last$im  < 1)
-        cond_meta <- which(data_last$im == 1)
-          
-          
-        d_Primary    <- d[cond_prim]
-        d_Metastatic <- d[cond_meta]
-        
-        d <- str_split(d,",")  
-        d <- unlist(d)
-        d <- as.integer(d)
-        
-        d_Primary <- str_split(d_Primary,",")  
-        d_Primary <- unlist(d_Primary)
-        d_Primary <- as.integer(d_Primary)
-        
-        d_Metastatic <- str_split(d_Metastatic,",")  
-        d_Metastatic <- unlist(d_Metastatic)
-        d_Metastatic <- as.integer(d_Metastatic)  
-        
-        Z_M <- TRUE
-        Z_N <- TRUE
-        Z_M <- all(is.na(d_Metastatic))
-        Z_N <- all(is.na(d_Primary))
-        
-        out <- NULL
-        
-        if (!Z_M | !Z_N) {
-            out <- as.data.frame( tab_clones(d = d, freq = data_last$N_cells) )
-            names(out) <- c("pos","Freq")
-        } else {
-            out <- data.frame(pos = 0, Freq = 0)
-        }
-        
-        
-        if (!Z_N && N > 0) {
-            out_Prim <- NULL
-            out_Prim <- as.data.frame( tab_clones(d = d_Primary, freq = data_last$N_cells[cond_prim]) )
-            names(out_Prim) <- c("pos","Freq_Prim")
-            out <- merge.data.frame(out_Prim, out, by = "pos" , all = TRUE)
-          
-        } else out["Freq_Prim"] <- 0
-        
-        
-        if (!Z_M && M > 0) {
-            out_Met <- NULL
-            out_Met <- as.data.frame( tab_clones(d = d_Metastatic, freq = data_last$N_cells[cond_meta]) )
-            names(out_Met) <- c("pos","Freq_Met")
-            out <- merge.data.frame(out_Met, out, by = "pos" , all = TRUE)
-          
-        } else out["Freq_Met"] <- 0
-        
-        
-        out[is.na(out)] <- 0 
-        
-        if ( N > 0 ) out$VAF_Prim <- 0.5 * out$Freq_Prim / N   else out$VAF_Prim <- 0
-        if ( M > 0 ) out$VAF_Met  <- 0.5 * out$Freq_Met  / M   else out$VAF_Met  <- 0
-        if (!Z_M | !Z_N) out$VAF <- 0.5 * out$Freq / N_all     else out$VAF      <- 0
-        
-        
-        # nm <- names(data_last[k])
-        VAF1 <- NULL
-        VAF1 <- cbind.data.frame(DriverPasngr, Gene, out$pos, 
-                                 out$VAF_Prim,  out$Freq_Prim, N, 
-                                 out$VAF_Met ,  out$Freq_Met,  M,
-                                 out$VAF,  out$Freq, N_all)
-        VAF <- rbind.data.frame(VAF,VAF1)
+    d <- as.vector( data_last[,k] )
+    d <- as.character(d)
+    d <- str_replace_all(d,":.....,",",")
+    d <- str_replace_all(d,":....,",",")
+    d <- str_replace_all(d,":...,",",")
+    d <- str_replace_all(d,":..,",",")
+    d <- str_replace_all(d,":.,",",")
+    
+    d <- str_replace_all(d,":.....","")
+    d <- str_replace_all(d,":....","")
+    d <- str_replace_all(d,":...","")
+    d <- str_replace_all(d,":..","")
+    d <- str_replace_all(d,":.","")
+    
+    # condition for Primary and metastasis cells:
+    cond_prim <- which(data_last$im  < 1)
+    cond_meta <- which(data_last$im == 1)
+    
+    
+    d_Primary    <- d[cond_prim]
+    d_Metastatic <- d[cond_meta]
+    
+    
+    
+    out <- NULL
+    if ( length(d) > 0 )  {
+      out  <-  tab_sites(d , freq = data_last$N_cells)     ### as.data.frame( tab_clones(d = d, freq = data_last$N_cells) )
+    } else {
+      out  <-  data.frame(pos = 0, Freq = 0)
     }
-    
-    header <- c( "DriverPasngr", "Gene", "Position", 
-                 "VAF_Primary", "Ncells_Primary_wMutation", "Ncells_Primary",
-                 "VAF_Metastatic", "Ncells_Metastatic_wMutation", "Ncells_Metastatic", 
-                 "VAF_PriMet", "Ncells_PriMet_wMutation", "Ncells_PriMet" )
-    
-    names(VAF) <- header
-    
-    ### Exclude this part, because of debugging for many simulations, 
-    ### so VAF file can content the NA and zero data, if there is no mutations in some genes.
-    
-    # VAF <- VAF[-which(is.na.data.frame(VAF$Position)) , ]
-    # row.names(VAF) <- 1:length(VAF$DriverPasngr)
+    names(out) <- c("pos","Freq")
     
     
-    write.table(VAF,file = "Output/VAF.txt", append = FALSE, row.names = FALSE, sep="\t")
+    out_Prim  <-  NULL
+    if ( length(d_Primary) > 0 )  {
+      out_Prim  <-  tab_sites(d = d_Primary , freq = data_last$N_cells[cond_prim] )  
+    } else {
+      out_Prim  <-  data.frame(pos = 0, Freq_Prim = 0)
+    }
+    names(out_Prim) <- c("pos","Freq_Prim")
+    out <- merge.data.frame(out_Prim, out, by = "pos" , all = TRUE)
     
-    print("VAF is saved to the file `Output/VAF.txt` ")
+    out_Met <- NULL
+    if ( length(d_Metastatic) > 0 )  {
+      out_Met  <-  tab_sites(d = d_Metastatic , freq = data_last$N_cells[cond_meta] ) 
+    } else {
+      out_Met  <-  data.frame(pos = 0, Freq_Met = 0)
+    }
+    names(out_Met) <- c("pos","Freq_Met")
+    out <- merge.data.frame(out_Met, out, by = "pos" , all = TRUE)
     
-    return(VAF)
+    out[is.na(out)] <- 0 
+    
+    
+    if ( N > 0 ) out$VAF_Prim <- 0.5 * out$Freq_Prim / N   else out$VAF_Prim <- 0
+    if ( M > 0 ) out$VAF_Met  <- 0.5 * out$Freq_Met  / M   else out$VAF_Met  <- 0
+    if ( N_all > 0 ) out$VAF  <- 0.5 * out$Freq / N_all    else out$VAF      <- 0
+    
+    
+    # nm <- names(data_last[k])
+    VAF1 <- NULL
+    VAF1 <- cbind.data.frame(DriverPasngr, Gene, out$pos, 
+                             out$VAF_Prim,  out$Freq_Prim, N, 
+                             out$VAF_Met ,  out$Freq_Met,  M,
+                             out$VAF,  out$Freq, N_all)
+    VAF <- rbind.data.frame(VAF,VAF1)
+  }
+  
+  header <- c( "DriverPasngr", "Gene", "Position", 
+               "VAF_Primary", "Ncells_Primary_wMutation", "Ncells_Primary",
+               "VAF_Metastatic", "Ncells_Metastatic_wMutation", "Ncells_Metastatic", 
+               "VAF_PriMet", "Ncells_PriMet_wMutation", "Ncells_PriMet" )
+  
+  names(VAF) <- header
+  
+  write.table(VAF,file = "Output/VAF.txt", append = FALSE, row.names = FALSE, sep="\t")
+  
+  print("VAF is saved to the file `Output/VAF.txt` ")
+  
+  return(VAF)
 }
-
 
 
 
