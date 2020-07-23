@@ -1,0 +1,8 @@
+"Gene"	"Apoptosis ($H_a$)"	"Angiogenesis ($H_b$)"	"Growth / Anti-growth ($H_d$)"	"Immortalization ($H_i$)"	"Invasion / Metastasis ($H_{im}$)"
+"GA"	1	0	0	0	0
+"GB"	0	1	0	0	0
+"GIM1"	0	0	0	0	0.1
+"GIM2"	0	0	0	0	0.9
+"GI"	0	0	0	1	0
+"GD1"	0	0	0.9	0	0
+"GD2"	0	0	0.1	0	0

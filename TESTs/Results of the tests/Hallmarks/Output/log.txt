@@ -1,0 +1,15 @@
+genefile	Input/gene_cds2.txt
+clonefile	Input/cloneinit.txt
+geneoutfile	Output/geneout.txt
+cloneoutfile	Output/cloneout.txt
+logoutfile	Output/log.txt
+E	0.001
+F	2
+m	1e-09
+uo	0.5
+us	0.5
+s	10
+k	0.2
+censore_n	10000
+censore_t	2
+d0	0

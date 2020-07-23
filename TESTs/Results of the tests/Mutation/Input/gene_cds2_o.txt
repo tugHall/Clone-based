@@ -1,0 +1,5 @@
+GA	1	apoptosis	o	1
+GB	1	angiogenesis	o	1
+GIM	1	invasion	o	1
+GI	1	immortalization	o	1
+GD	1	growth	o	1

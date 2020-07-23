@@ -1,0 +1,5 @@
+GA	100	apoptosis	o	1
+GB	100	angiogenesis	o	1
+GIM	100	invasion	o	1
+GI	100	immortalization	o	1
+GD	100	growth	o	1

@@ -1,0 +1,5 @@
+GA	apoptosis	1	o
+GI	immortalization	1	o
+GD	growth|anti-growth	1	o
+GB	angiogenesis	1	o
+GIM	invasion	1	o
