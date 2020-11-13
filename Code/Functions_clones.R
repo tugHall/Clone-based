@@ -424,8 +424,8 @@ Safe_VAF <- function(data_last, n_cluster) {
     d <- str_replace_all(d,":.","")
     
     # condition for Primary and metastasis cells:
-    cond_prim <- which(data_last$im  < 1)
-    cond_meta <- which(data_last$im == 1)
+    cond_prim <- which(data_last$type == 0)
+    cond_meta <- which(data_last$type == 1)
     
     
     d_Primary    <- d[cond_prim]
